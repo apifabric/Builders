@@ -1,0 +1,395 @@
+about:
+  date: October 17, 2024 19:12:38
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 16
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Cart:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: product_id
+    - name: quantity
+      required: true
+    description: Temporary storage for customers while they consider purchasing products.
+    info_list: Temporary storage for customers while they consider purchasing products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Cart
+    user_key: id
+  Category:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: id
+    description: Categories to classify products for easier browsing.
+    info_list: Categories to classify products for easier browsing.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    type: Category
+    user_key: name
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+      required: true
+    - name: address
+    - name: created_at
+    - name: id
+    - name: password
+      required: true
+    description: A user on the platform who can buy and sell construction supplies.
+    info_list: A user on the platform who can buy and sell construction supplies.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: CartList
+      resource: Cart
+    - direction: tomany
+      fks:
+      - recipient_id
+      name: MessageList
+      resource: Message
+    - direction: tomany
+      fks:
+      - sender_id
+      name: senderMessageList
+      resource: Message
+    - direction: tomany
+      fks:
+      - buyer_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - seller_id
+      name: ProductList
+      resource: Product
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - customer_id
+      name: WishlistList
+      resource: Wishlist
+    type: Customer
+    user_key: name
+  Message:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: recipient_id
+    - name: sender_id
+    - name: content
+      required: true
+    - name: sent_at
+    description: Messages exchanged between customers for product information or order
+      details.
+    info_list: Messages exchanged between customers for product information or order
+      details.
+    tab_groups:
+    - direction: toone
+      fks:
+      - recipient_id
+      name: recipient
+      resource: Customer
+    - direction: toone
+      fks:
+      - sender_id
+      name: sender
+      resource: Customer
+    type: Message
+    user_key: id
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: buyer_id
+    - name: created_at
+    - name: total_amount
+      required: true
+    description: Orders created by customers for purchasing products.
+    info_list: Orders created by customers for purchasing products.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - order_id
+      name: ShippingList
+      resource: Shipping
+    - direction: toone
+      fks:
+      - buyer_id
+      name: buyer
+      resource: Customer
+    type: Order
+    user_key: id
+  OrderItem:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+    - name: product_id
+    - name: quantity
+      required: true
+    - name: price
+      required: true
+    description: Items that are part of an order, linked to a specific product.
+    info_list: Items that are part of an order, linked to a specific product.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: OrderItem
+    user_key: id
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+    - name: amount
+      required: true
+    - name: payment_date
+    - name: method
+      required: true
+    description: Payment details associated with customer orders.
+    info_list: Payment details associated with customer orders.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+    user_key: id
+  Product:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: seller_id
+    - name: description
+    - name: price
+      required: true
+    - name: quantity
+      required: true
+    - name: created_at
+    - name: id
+    description: Items available for sale on the marketplace by customers.
+    info_list: Items available for sale on the marketplace by customers.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: CartList
+      resource: Cart
+    - direction: tomany
+      fks:
+      - product_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - product_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    - direction: tomany
+      fks:
+      - product_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - product_id
+      name: WishlistList
+      resource: Wishlist
+    - direction: toone
+      fks:
+      - seller_id
+      name: seller
+      resource: Customer
+    type: Product
+    user_key: name
+  ProductCategory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: category_id
+    - name: product_id
+    description: Link between products and categories indicating their classification.
+    info_list: Link between products and categories indicating their classification.
+    tab_groups:
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: ProductCategory
+    user_key: id
+  Review:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: product_id
+    - name: rating
+      required: true
+    - name: comment
+    - name: created_at
+    description: Customer reviews for products they have purchased.
+    info_list: Customer reviews for products they have purchased.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Review
+    user_key: id
+  Shipping:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+    - name: address
+      required: true
+    - name: delivery_date
+    - name: shipping_cost
+    description: Shipping details for the orders.
+    info_list: Shipping details for the orders.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Shipping
+    user_key: id
+  Wishlist:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: product_id
+    description: Wishlist for customers to save products they intend to purchase later.
+    info_list: Wishlist for customers to save products they intend to purchase later.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Wishlist
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

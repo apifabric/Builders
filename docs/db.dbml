@@ -1,0 +1,114 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Cart {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    product_id INTEGER 
+    quantity INTEGER 
+    }
+
+Table Customer {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    email VARCHAR(100) 
+    password VARCHAR(100) 
+    address TEXT 
+    created_at DATETIME 
+    }
+
+Table Product {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    description TEXT 
+    price FLOAT 
+    quantity INTEGER 
+    seller_id INTEGER 
+    created_at DATETIME 
+    }
+
+Table Category {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    description TEXT 
+    }
+
+Table Message {
+    id INTEGER [primary key]
+    sender_id INTEGER 
+    recipient_id INTEGER 
+    content TEXT 
+    sent_at DATETIME 
+    }
+
+Table Order {
+    id INTEGER [primary key]
+    buyer_id INTEGER 
+    created_at DATETIME 
+    total_amount FLOAT 
+    }
+
+Table OrderItem {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    product_id INTEGER 
+    quantity INTEGER 
+    price FLOAT 
+    }
+
+Table Payment {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    amount FLOAT 
+    payment_date DATETIME 
+    method VARCHAR(50) 
+    }
+
+Table ProductCategory {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    category_id INTEGER 
+    }
+
+Table Review {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    customer_id INTEGER 
+    rating INTEGER 
+    comment TEXT 
+    created_at DATETIME 
+    }
+
+Table Shipping {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    address TEXT 
+    delivery_date DATETIME 
+    shipping_cost FLOAT 
+    }
+
+Table Wishlist {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    product_id INTEGER 
+    }
+
+
+
+// Relationships
+    Ref: Cart.(customer_id) < Customer.(id)
+    Ref: Cart.(product_id) < Product.(id)
+    Ref: Product.(seller_id) < Customer.(id)
+    Ref: Message.(recipient_id) < Customer.(id)
+    Ref: Message.(sender_id) < Customer.(id)
+    Ref: Order.(buyer_id) < Customer.(id)
+    Ref: OrderItem.(order_id) < Order.(id)
+    Ref: OrderItem.(product_id) < Product.(id)
+    Ref: Payment.(order_id) < Order.(id)
+    Ref: ProductCategory.(category_id) < Category.(id)
+    Ref: ProductCategory.(product_id) < Product.(id)
+    Ref: Review.(customer_id) < Customer.(id)
+    Ref: Review.(product_id) < Product.(id)
+    Ref: Shipping.(order_id) < Order.(id)
+    Ref: Wishlist.(customer_id) < Customer.(id)
+    Ref: Wishlist.(product_id) < Product.(id)
